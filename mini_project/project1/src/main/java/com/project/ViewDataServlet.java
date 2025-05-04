@@ -4,6 +4,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.*;
 import java.sql.*;
+import java.time.LocalDate;
 
 @WebServlet("/ViewDataServlet")
 public class ViewDataServlet extends HttpServlet {
@@ -27,18 +28,27 @@ public class ViewDataServlet extends HttpServlet {
         String url = "jdbc:mysql://localhost:3306/project1";
         String dbUser = "root";
         String dbPassword = "manoj123";
+
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection conn = DriverManager.getConnection(url, dbUser, dbPassword);
 
-            String sql = "SELECT id, name, phone, email, room, status, rent_from, rent_to FROM userdata WHERE username = ? AND status = 'paid'";
+            // 1. Update status to 'unpaid' if rent_to is less than today
+            String updateSql = "UPDATE userdata SET status = 'unpaid' WHERE username = ? AND rent_to < ? AND status = 'paid'";
+            PreparedStatement updateStmt = conn.prepareStatement(updateSql);
+            updateStmt.setString(1, username);
+            updateStmt.setDate(2, Date.valueOf(LocalDate.now()));
+            updateStmt.executeUpdate();
+            updateStmt.close();
 
+            // 2. Fetch only unpaid records
+            String sql = "SELECT id, name, phone, email, room, status, rent_from, rent_to FROM userdata WHERE username = ? AND status = 'unpaid'";
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setString(1, username);
             ResultSet rs = stmt.executeQuery();
 
             out.println("<html><body>");
-            out.println("<h2>Room Filled Data</h2>");
+            out.println("<h2>Unpaid Room Rent Members</h2>");
             out.println("<table border='1'>");
             out.println("<tr><th>Id</th><th>Name</th><th>Phone</th><th>Email</th><th>Room</th><th>Status</th><th>Rent From</th><th>Rent To</th></tr>");
 
@@ -46,7 +56,7 @@ public class ViewDataServlet extends HttpServlet {
             while (rs.next()) {
                 hasData = true;
                 out.println("<tr>");
-                out.println("<td>" + rs.getString("Id") + "</td>");
+                out.println("<td>" + rs.getString("id") + "</td>");
                 out.println("<td>" + rs.getString("name") + "</td>");
                 out.println("<td>" + rs.getString("phone") + "</td>");
                 out.println("<td>" + rs.getString("email") + "</td>");
@@ -58,7 +68,7 @@ public class ViewDataServlet extends HttpServlet {
             }
 
             if (!hasData) {
-                out.println("<tr><td colspan='7'>No data found for user: " + username + "</td></tr>");
+                out.println("<tr><td colspan='8'>No unpaid members found for user: " + username + "</td></tr>");
             }
 
             out.println("</table>");
@@ -67,6 +77,7 @@ public class ViewDataServlet extends HttpServlet {
             out.println("<form action='body.html'>");
             out.println("<button type='submit'>Go Back</button>");
             out.println("</form>");
+
             rs.close();
             stmt.close();
             conn.close();
