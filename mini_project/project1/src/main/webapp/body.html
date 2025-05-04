@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Rent Form</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #e0f7fa, #fff3e0);
+      margin: 0;
+      padding: 40px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container {
+      background: #ffffff;
+      padding: 30px 40px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      max-width: 550px;
+      width: 100%;
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    label {
+      margin-top: 12px;
+      display: block;
+      font-weight: bold;
+      color: #444;
+    }
+
+    input[type="text"],
+    input[type="tel"],
+    input[type="email"],
+    input[type="date"] {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-sizing: border-box;
+      font-size: 14px;
+    }
+
+    .radio-group {
+      display: flex;
+      gap: 20px;
+      margin-top: 10px;
+    }
+
+    .radio-group label {
+      font-weight: normal;
+    }
+
+    .button-row,
+    .form-button {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 25px;
+      justify-content: space-between;
+    }
+
+    .button-row form,
+    .form-button {
+      flex: 1;
+    }
+
+    button,
+    input[type="submit"] {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 6px;
+      background-color: #0288d1;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover,
+    input[type="submit"]:hover {
+      background-color: #026aa7;
+    }
+
+    .logout-btn {
+      margin-top: 20px;
+      background-color: #e53935;
+    }
+
+    .logout-btn:hover {
+      background-color: #d32f2f;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>Tenant Rent Form</h2>
+
+  <!-- Main form -->
+  <form action="InsertServlet" method="post">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required>
+
+    <label for="phone">Phone Number:</label>
+    <input type="tel" id="phone" name="phone" required pattern="[0-9]{10}">
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required>
+
+    <label for="room">Room Number:</label>
+    <input type="text" id="room" name="room" required>
+
+    <label>Payment Status:</label>
+    <div class="radio-group">
+      <label><input type="radio" name="status" value="Paid" required> Paid</label>
+      <label><input type="radio" name="status" value="Unpaid"> Unpaid</label>
+    </div>
+
+    <label for="fromDate">Rent Date From:</label>
+    <input type="date" id="fromDate" name="fromDate" required>
+
+    <label for="toDate">Rent Date To:</label>
+    <input type="date" id="toDate" name="toDate" required>
+
+    <!-- Submit button only -->
+    <div class="form-button">
+      <input type="submit" value="Submit">
+    </div>
+  </form>
+
+  <!-- Action buttons below form -->
+  <div class="button-row">
+    <form action="ViewDataServlet" method="get">
+      <button type="submit">View</button>
+    </form>
+    <form action="update.html" method="get">
+      <button type="submit">Update</button>
+    </form>
+    <form action="HistoryServlet" method="get">
+      <button type="submit">History</button>
+    </form>
+    <form action="filter.html" method="get">
+      <button type="submit">Filter</button>
+    </form>
+  </div>
+
+  <!-- Logout Button -->
+  <button class="logout-btn" onclick="logout()">Logout</button>
+</div>
+
+<script>
+  // Set today's date as min value for date inputs
+  const today = new Date().toISOString().split("T")[0];
+  document.getElementById("fromDate").setAttribute("min", today);
+  document.getElementById("toDate").setAttribute("min", today);
+
+  function logout() {
+    window.location.href = "index.html"; // Redirect to login
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Update Tenant Details</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f3f3f3;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background-color: #fff;
+      padding: 30px 40px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 400px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: #555;
+    }
+
+    input[type="text"], input[type="date"], input[type="email"] {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      width: 100%;
+      background-color: #e74c3c;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #c0392b;
+    }
+    .radio-group {
+      display: flex;
+      gap: 20px;
+      margin-top: 10px;
+    }
+
+    .radio-group label {
+      font-weight: normal;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Enter form to Filter Details</h2>
+    <form action="FilterServlet" method="post"> 
+    <label>Payment Status:</label>
+    <div class="radio-group">
+      <label><input type="radio" name="status" value="Paid" required> Paid</label>
+      <label><input type="radio" name="status" value="Unpaid"> Unpaid</label>
+    </div>
+      <label for="rent_from">Rent From:</label>
+      <input type="date" id="rent_from" name="rent_from" required>
+      <label for="rent_to">Rent To:</label>
+      <input type="date" id="rent_to" name="rent_to" required>
+      <button type="submit">Filter</button>
+    </form>
+        <br>
+    <a href="body.html">
+      <button type="button" style="padding: 10px 20px; background-color: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer;">
+        Go Back
+      </button>
+    </a>
+  </div>
+</body>
+</html>
